@@ -42,6 +42,10 @@
         Dim postData = System.Text.Encoding.UTF8.GetBytes(testPost)
         WaitForNavigate(wbOpenEMRSession)
         wbOpenEMRSession.Navigate(mOEMRServer + "/library/doctrine/batch/libreStatus.php", "_top", postData, "Content-Type: application/x-www-form-urlencoded")
+        WaitForNavigate(wbOpenEMRSession)
+        mDirMgr.UpdateStatusFromBrowser(wbOpenEMRSession)
+        dgFileStatuses.Refresh()
+
     End Sub
 
     Private Sub HandleLogin(ByVal sender As Object, ByVal e As System.Windows.Forms.WebBrowserNavigatedEventArgs)
