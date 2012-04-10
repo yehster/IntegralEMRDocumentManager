@@ -48,6 +48,7 @@
                 If status Then
                     If children.Item(2).InnerText() = "Import" Then
                         fi.Status = "Complete"
+                        fi.Message = ""
                     End If
                 Else
                     fi.Message = children.Item(1).InnerText()
