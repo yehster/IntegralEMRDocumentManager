@@ -30,7 +30,9 @@ Public Class FormToMultipartPostData
     Public Sub Submit()
         Dim url As Uri = New Uri(webbrowser.Url, form.GetAttribute("action"))
         Dim req As RequestParameters = GetEncodedPostData()
-        webbrowser.Navigate(url, form.GetAttribute("target"), req.data, req.headers)
+        Dim target As String = form.GetAttribute("target")
+        target = "_top"
+        webbrowser.Navigate(url, target, req.data, req.headers)
     End Sub
 
     Private Sub GetValuesFromForm(ByVal form As HtmlElement)
@@ -90,9 +92,9 @@ Public Class FormToMultipartPostData
         Dim boundary As String = "----------------------------" + DateTime.Now.Ticks.ToString("x")
 
         Dim memStream As New System.IO.MemoryStream()
-        Dim boundarybytes As Byte() = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n")
+        Dim boundarybytes() As Byte = System.Text.Encoding.ASCII.GetBytes(vbCrLf + "--" + boundary + vbCrLf)
 
-        Dim formdataTemplate As String = "\r\n--" + boundary + "\r\nContent-Disposition: form-data; name=""{0}\"";\r\n\r\n{1}"
+        Dim formdataTemplate As String = vbCrLf + "--" + boundary + vbCrLf + "Content-Disposition: form-data; name=""{0}"";" + vbCrLf + vbCrLf + "{1}"
         For Each v As ValuePair In values
 
             Dim formitem As String = String.Format(formdataTemplate, v.name, v.value)
@@ -101,7 +103,7 @@ Public Class FormToMultipartPostData
         Next
         memStream.Write(boundarybytes, 0, boundarybytes.Length)
 
-        Dim headerTemplate As String = "Content-Disposition: form-data; name=""{0}""; filename=""{1}""\r\nContent-Type: application/octet-stream\r\n\r\n"
+        Dim headerTemplate As String = "Content-Disposition: form-data; name=""{0}""; filename=""{1}""" + vbCrLf + "Content-Type: application/octet-stream" + vbCrLf + vbCrLf
 
         For Each v As ValuePair In files
 
@@ -113,30 +115,29 @@ Public Class FormToMultipartPostData
 
                 If (v.value.Length = 0) Then Continue For
                 filePath = v.value
-
-
-                Try
-
-                    Dim fileStream As New IO.FileStream(filePath, IO.FileMode.Open, IO.FileAccess.Read)
-
-                    Dim header As String = String.Format(headerTemplate, v.name, filePath)
-                    Dim headerbytes() As Byte = System.Text.Encoding.UTF8.GetBytes(header)
-                    memStream.Write(headerbytes, 0, headerbytes.Length)
-
-                    Dim buffer(1024) As Byte
-                    Dim bytesRead As Integer = 0
-                    bytesRead = fileStream.Read(buffer, 0, buffer.Length)
-                    While (bytesRead <> 0)
-                        memStream.Write(buffer, 0, bytesRead)
-                    End While
-
-                    memStream.Write(boundarybytes, 0, boundarybytes.Length)
-                    fileStream.Close()
-
-                Catch x As Exception
-                    MessageBox.Show(x.Message, "Cannot upload the file", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                End Try
             End If
+            Try
+
+                Dim fileStream As New IO.FileStream(filePath, IO.FileMode.Open, IO.FileAccess.Read)
+
+                Dim header As String = String.Format(headerTemplate, v.name, filePath)
+                Dim headerbytes() As Byte = System.Text.Encoding.UTF8.GetBytes(header)
+                memStream.Write(headerbytes, 0, headerbytes.Length)
+
+                Dim buffer(1024) As Byte
+                Dim bytesRead As Integer = 0
+                bytesRead = fileStream.Read(buffer, 0, buffer.Length)
+                While (bytesRead <> 0)
+                    memStream.Write(buffer, 0, bytesRead)
+                    bytesRead = fileStream.Read(buffer, 0, buffer.Length)
+                End While
+
+                memStream.Write(boundarybytes, 0, boundarybytes.Length)
+                fileStream.Close()
+
+            Catch x As Exception
+                MessageBox.Show(x.Message, "Cannot upload the file", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            End Try
         Next
 
         Dim result As New RequestParameters()
@@ -146,9 +147,9 @@ Public Class FormToMultipartPostData
         memStream.Read(result.data, 0, result.data.Length)
         memStream.Close()
 
-        result.headers = "Content-Type: multipart/form-data; boundary=" + boundary + "\r\n" +
-                         "Content-Length: " + result.data.Length + "\r\n" +
-                         "\r\n"
+        result.headers = "Content-Type: multipart/form-data; boundary=" + boundary + vbCrLf +
+                         "Content-Length: " + CStr(result.data.Length) + vbCrLf +
+                         vbCrLf
 
         Return result
 

@@ -25,6 +25,7 @@ Partial Class MainWindow
         Me.dgFileStatuses = New System.Windows.Forms.DataGridView()
         Me.wbOpenEMRSession = New System.Windows.Forms.WebBrowser()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
         CType(Me.dgFileStatuses, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -53,12 +54,22 @@ Partial Class MainWindow
         Me.Button1.Text = "Button1"
         Me.Button1.UseVisualStyleBackColor = True
         '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(29, 450)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(113, 38)
+        Me.Button2.TabIndex = 3
+        Me.Button2.Text = "Send File"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
         'MainWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.ClientSize = New System.Drawing.Size(1026, 722)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.wbOpenEMRSession)
         Me.Controls.Add(Me.dgFileStatuses)
@@ -71,5 +82,6 @@ Partial Class MainWindow
     Friend WithEvents dgFileStatuses As System.Windows.Forms.DataGridView
     Friend WithEvents wbOpenEMRSession As System.Windows.Forms.WebBrowser
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents Button2 As System.Windows.Forms.Button
 
 End Class

@@ -53,4 +53,16 @@
         RemoveHandler Browser.Navigated, AddressOf HandleLogin
 
     End Sub
+
+    Private Sub SubmitFile(ByVal fileName As String, ByRef browser As WebBrowser)
+        Dim Form As HtmlElement = browser.Document.Forms(0)
+        Dim postData As New FormToMultipartPostData(browser, Form)
+        postData.SetFile("file", fileName)
+        postData.Submit()
+    End Sub
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        wbOpenEMRSession.Navigate(mOEMRServer + "/library/doctrine/test/testFileUpload.php")
+        WaitForNavigate(wbOpenEMRSession)
+        SubmitFile("E:\duaneBull2.jpg", wbOpenEMRSession)
+    End Sub
 End Class
