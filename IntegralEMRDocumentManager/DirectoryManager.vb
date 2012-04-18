@@ -24,7 +24,8 @@
         dg.DataSource = mFilesList
         dg.Columns("FullName").Visible = False
         dg.Columns("Filename").Width = 140
-        dg.Columns("Message").Width = 240
+        dg.Columns("Message").Width = 280
+        dg.Columns("Status").Width = 60
         dg.Refresh()
     End Sub
 
