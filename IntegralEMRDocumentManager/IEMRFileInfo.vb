@@ -13,7 +13,11 @@
             Return mFI.Name
         End Get
     End Property
-
+    Public ReadOnly Property FullName As String
+        Get
+            Return mFI.FullName
+        End Get
+    End Property
     Public Property Status As String
         Get
             Return mStatus

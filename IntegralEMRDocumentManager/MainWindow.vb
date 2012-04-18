@@ -33,7 +33,7 @@
     Protected Sub WaitForNavigate(ByVal Browser)
         Do
             Application.DoEvents()
-        Loop Until (Browser.ReadyState = WebBrowserReadyState.Complete)
+        Loop Until (Browser.ReadyState <> WebBrowserReadyState.Loading)
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
@@ -64,5 +64,14 @@
         wbOpenEMRSession.Navigate(mOEMRServer + "/library/doctrine/test/testFileUpload.php")
         WaitForNavigate(wbOpenEMRSession)
         SubmitFile("E:\duaneBull2.jpg", wbOpenEMRSession)
+    End Sub
+
+    Private Sub btnBatch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBatch.Click
+        wbOpenEMRSession.Navigate(mOEMRServer + "/library/doctrine/test/testFileUpload.php")
+        WaitForNavigate(wbOpenEMRSession)
+        For Each fi As IEMRFileInfo In mDirMgr.UnsuccessfulFiles
+            SubmitFile(fi.FullName, wbOpenEMRSession)
+            WaitForNavigate(wbOpenEMRSession)
+        Next
     End Sub
 End Class

@@ -26,6 +26,7 @@ Partial Class MainWindow
         Me.wbOpenEMRSession = New System.Windows.Forms.WebBrowser()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
+        Me.btnBatch = New System.Windows.Forms.Button()
         CType(Me.dgFileStatuses, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -34,12 +35,12 @@ Partial Class MainWindow
         Me.dgFileStatuses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgFileStatuses.Location = New System.Drawing.Point(4, 2)
         Me.dgFileStatuses.Name = "dgFileStatuses"
-        Me.dgFileStatuses.Size = New System.Drawing.Size(357, 279)
+        Me.dgFileStatuses.Size = New System.Drawing.Size(565, 342)
         Me.dgFileStatuses.TabIndex = 0
         '
         'wbOpenEMRSession
         '
-        Me.wbOpenEMRSession.Location = New System.Drawing.Point(373, 11)
+        Me.wbOpenEMRSession.Location = New System.Drawing.Point(575, 12)
         Me.wbOpenEMRSession.MinimumSize = New System.Drawing.Size(20, 20)
         Me.wbOpenEMRSession.Name = "wbOpenEMRSession"
         Me.wbOpenEMRSession.Size = New System.Drawing.Size(641, 514)
@@ -63,12 +64,22 @@ Partial Class MainWindow
         Me.Button2.Text = "Send File"
         Me.Button2.UseVisualStyleBackColor = True
         '
+        'btnBatch
+        '
+        Me.btnBatch.Location = New System.Drawing.Point(29, 540)
+        Me.btnBatch.Name = "btnBatch"
+        Me.btnBatch.Size = New System.Drawing.Size(113, 38)
+        Me.btnBatch.TabIndex = 4
+        Me.btnBatch.Text = "Send Batch"
+        Me.btnBatch.UseVisualStyleBackColor = True
+        '
         'MainWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
-        Me.ClientSize = New System.Drawing.Size(1026, 722)
+        Me.ClientSize = New System.Drawing.Size(1237, 719)
+        Me.Controls.Add(Me.btnBatch)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.wbOpenEMRSession)
@@ -83,5 +94,6 @@ Partial Class MainWindow
     Friend WithEvents wbOpenEMRSession As System.Windows.Forms.WebBrowser
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents btnBatch As System.Windows.Forms.Button
 
 End Class

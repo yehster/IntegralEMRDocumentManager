@@ -22,6 +22,9 @@
     Public Sub PopulateGrid(ByRef dg As DataGridView)
         InitializeFilesList()
         dg.DataSource = mFilesList
+        dg.Columns("FullName").Visible = False
+        dg.Columns("Filename").Width = 140
+        dg.Columns("Message").Width = 240
         dg.Refresh()
     End Sub
 
@@ -57,4 +60,15 @@
             End If
         Next
     End Sub
+
+    Public Function UnsuccessfulFiles()
+        Dim retval As New Collection
+        For Each fi As IEMRFileInfo In mFilesList
+            If (fi.Status = "Complete") Then
+            Else
+                retval.Add(fi)
+            End If
+        Next
+        Return retval
+    End Function
 End Class
