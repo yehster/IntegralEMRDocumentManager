@@ -11,7 +11,6 @@
         mDirMgr.PopulateGrid(dgFileStatuses)
         wbOpenEMRSession.Navigate(mOEMRServer)
         Login(wbOpenEMRSession, "admin", "pass")
-
     End Sub
 
 
@@ -33,10 +32,15 @@
     Protected Sub WaitForNavigate(ByVal Browser)
         Do
             Application.DoEvents()
-        Loop Until (Browser.ReadyState <> WebBrowserReadyState.Loading)
+        Loop Until (Browser.ReadyState = WebBrowserReadyState.Complete)
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Protected Sub WaitForNotLoading(ByVal Browser)
+        Do
+            Application.DoEvents()
+        Loop Until (Browser.ReadyState <> WebBrowserReadyState.Loading)
+    End Sub
+    Protected Sub UpdateStatuses()
         WaitForNavigate(wbOpenEMRSession)
         Dim testPost = "files=" + mDirMgr.GenerateFilesList("") + "&stuff=more stuff"
         Dim postData = System.Text.Encoding.UTF8.GetBytes(testPost)
@@ -45,7 +49,11 @@
         WaitForNavigate(wbOpenEMRSession)
         mDirMgr.UpdateStatusFromBrowser(wbOpenEMRSession)
         dgFileStatuses.Refresh()
+    End Sub
 
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+
+        UpdateStatuses()
     End Sub
 
     Private Sub HandleLogin(ByVal sender As Object, ByVal e As System.Windows.Forms.WebBrowserNavigatedEventArgs)
@@ -71,7 +79,17 @@
         WaitForNavigate(wbOpenEMRSession)
         For Each fi As IEMRFileInfo In mDirMgr.UnsuccessfulFiles
             SubmitFile(fi.FullName, wbOpenEMRSession)
-            WaitForNavigate(wbOpenEMRSession)
+            WaitForNotLoading(wbOpenEMRSession)
         Next
+    End Sub
+
+    Private Sub HandleDGEvent()
+
+    End Sub
+
+
+    Private Sub dgFileStatuses_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgFileStatuses.CellContentDoubleClick
+        Dim fi As IEMRFileInfo = dgFileStatuses.DataSource.item(e.RowIndex + 1)
+        Shell("explorer.exe " + fi.FullName)
     End Sub
 End Class
